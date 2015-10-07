@@ -34,6 +34,11 @@ IntervalHeap{Int64}([2,3,8])
 julia> maximum(heap)
 8
 
+julia> for x in heap; @show x; end
+x = 2
+x = 3
+x = 8
+
 ```
 
 Time Complexities
