@@ -187,6 +187,13 @@ function Base.empty!(heap::IntervalHeap)
     return heap
 end
 
+function Base.sizehint!(heap::IntervalHeap, n::Integer)
+    n = cld(n, 2)
+    sizehint!(heap.minheap, n)
+    sizehint!(heap.maxheap, n)
+    return heap
+end
+
 Base.start(heap::IntervalHeap) = 1
 Base.done(heap::IntervalHeap, i) = i > length(heap)
 function Base.next(heap::IntervalHeap, i)

@@ -104,8 +104,9 @@ end
 let
     heap = IntervalHeap([1,2,3])
     @test !isempty(heap)
-    empty!(heap)
+    @test empty!(heap) === heap
     @test isempty(heap)
+    @test sizehint!(heap, 10) === heap
 end
 
 let
