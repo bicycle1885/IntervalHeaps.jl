@@ -41,6 +41,7 @@ x = 8
 
 ```
 
+
 Time Complexities
 -----------------
 
@@ -51,6 +52,11 @@ Time Complexities
 * `popmin!(heap)`: O(log n)
 * `popmax!(heap)`: O(log n)
 
+
+Benchmarks
+----------
+
+See this Jupyter Notebook: [benchmark.ipynb](benchmark.ipynb).
 
 Reference
 ---------
