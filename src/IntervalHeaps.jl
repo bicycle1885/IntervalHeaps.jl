@@ -180,6 +180,13 @@ end
     end
 end
 
+function Base.empty!(heap::IntervalHeap)
+    empty!(heap.minheap)
+    empty!(heap.maxheap)
+    heap.len = 0
+    return heap
+end
+
 Base.start(heap::IntervalHeap) = 1
 Base.done(heap::IntervalHeap, i) = i > length(heap)
 function Base.next(heap::IntervalHeap, i)

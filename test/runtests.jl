@@ -102,6 +102,13 @@ let
 end
 
 let
+    heap = IntervalHeap([1,2,3])
+    @test !isempty(heap)
+    empty!(heap)
+    @test isempty(heap)
+end
+
+let
     # empty heap
     heap = IntervalHeap(Int[])
     @test isempty(heap)
