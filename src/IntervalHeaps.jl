@@ -162,23 +162,21 @@ function fix_down!(heap, i)
     return
 end
 
-function swapmin!(heap, p, i)
-    @assert p < i
+@inline function swapmin!(heap, p, i)
     minheap = heap.minheap
     maxheap = heap.maxheap
-    minheap[i], minheap[p] = minheap[p], minheap[i]
+    @inbounds minheap[i], minheap[p] = minheap[p], minheap[i]
     if i == endof(minheap) && isodd(length(heap))
-        maxheap[i] = minheap[i]
+        @inbounds maxheap[i] = minheap[i]
     end
 end
 
-function swapmax!(heap, p, i)
-    @assert p < i
+@inline function swapmax!(heap, p, i)
     minheap = heap.minheap
     maxheap = heap.maxheap
-    maxheap[i], maxheap[p] = maxheap[p], maxheap[i]
+    @inbounds maxheap[i], maxheap[p] = maxheap[p], maxheap[i]
     if i == endof(maxheap) && isodd(length(heap))
-        minheap[i] = maxheap[i]
+        @inbounds minheap[i] = maxheap[i]
     end
 end
 
