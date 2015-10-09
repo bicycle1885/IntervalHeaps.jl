@@ -65,6 +65,21 @@ function Base.push!{T}(heap::IntervalHeap{T}, val::T)
     return heap
 end
 
+function Base.pop!(heap::IntervalHeap)
+    check_nonempty(heap)
+    minheap = heap.minheap
+    maxheap = heap.maxheap
+    ret = minheap[end]
+    if iseven(length(heap))
+        minheap[end] = maxheap[end]
+    else
+        pop!(minheap)
+        pop!(maxheap)
+    end
+    heap.len -= 1
+    return ret
+end
+
 function popmin!(heap::IntervalHeap)
     check_nonempty(heap)
     minheap = heap.minheap

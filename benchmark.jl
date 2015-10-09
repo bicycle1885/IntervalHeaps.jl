@@ -63,6 +63,22 @@ function bench_push!(n, size)
     return best / m
 end
 
+function bench_pop!(n, size)
+    heap = IntervalHeap(randn(size))
+    pop!(heap)
+    m = 10
+    best = Inf
+    for _ in 1:n
+        heap = IntervalHeap(randn(size))
+        best = min(best, @elapsed begin
+            for _ in 1:m
+                pop!(heap)
+            end
+        end)
+    end
+    return best / m
+end
+
 function bench_popmin!(n, size)
     heap = IntervalHeap(randn(size))
     popmin!(heap)
@@ -96,7 +112,7 @@ function bench_popmax!(n, size)
 end
 
 let
-    println("size\tconstruction\tminimum\tmaximum\tpush!\tpopmin!\tpopmax!")
+    println("size\tconstruction\tminimum\tmaximum\tpush!\tpop!\tpopmin!\tpopmax!")
     n = 8
     for x in logspace(2, 7, 20)
         size = floor(Int, x)
@@ -105,7 +121,8 @@ let
             bench_construction(n, size), "\t",
             bench_minimum(n, size), "\t",
             bench_maximum(n, size), "\t",
-            bench_push!(4n, size), "\t",
+            bench_push!(4n, size),  "\t",
+            bench_pop!(n, size),    "\t",
             bench_popmin!(n, size), "\t",
             bench_popmax!(n, size)
         )

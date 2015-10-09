@@ -87,6 +87,19 @@ let
 end
 
 let
+    # pop! an element
+    for xs in ([1,2], [1,2,3], [1,2,3,4])
+        heap = IntervalHeap(xs)
+        ys = Int[]
+        while !isempty(heap)
+            elm = pop!(heap)
+            push!(ys, elm)
+        end
+        @test xs == sort(ys)
+    end
+end
+
+let
     # Float64
     xs = randn(10)
     heap = IntervalHeap(xs)
@@ -116,6 +129,7 @@ let
     @test_throws ArgumentError minimum(heap)
     @test_throws ArgumentError maximum(heap)
     @test_throws ArgumentError extrema(heap)
+    @test_throws ArgumentError pop!(heap)
     @test_throws ArgumentError popmin!(heap)
     @test_throws ArgumentError popmax!(heap)
 end
@@ -154,7 +168,15 @@ let
         @test extrema(heap) == extrema(xs)
         @test length(heap) == length(xs)
 
-        # Prop: iterative popmin! generates an increasingly sorted vector of the original vector
+        # Prop: iterative pop! generates an arbitrarily-ordered vector of the original vector
+        heap = IntervalHeap(xs)
+        ys = []
+        while !isempty(heap)
+            push!(ys, pop!(heap))
+        end
+        @test sort(ys) == sort(xs)
+
+        # Prop: iterative popmin! generates an increasingly-sorted vector of the original vector
         heap = IntervalHeap(xs)
         ys = []
         while !isempty(heap)
@@ -162,7 +184,7 @@ let
         end
         @test ys == sort(xs)
 
-        # Prop: iterative popmax! generates an decreasingly sorted vector of the original vector
+        # Prop: iterative popmax! generates an decreasingly-sorted vector of the original vector
         heap = IntervalHeap(xs)
         ys = []
         while !isempty(heap)

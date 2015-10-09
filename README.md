@@ -49,6 +49,7 @@ Time Complexities
 * `minimum(heap)`: O(1)
 * `maximum(heap)`: O(1)
 * `push!(heap)`: O(log n)
+* `pop!(heap)`: O(1)
 * `popmin!(heap)`: O(log n)
 * `popmax!(heap)`: O(log n)
 
