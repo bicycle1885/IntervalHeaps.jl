@@ -4,6 +4,17 @@
 
 [Double-ended priority queue (DEPQ)](https://en.wikipedia.org/wiki/Double-ended_priority_queue) based on the interval heap (Leeuwen and Wood, 1993).
 
+The following operations are supported (n is the number of elements):
+
+* `IntervalHeap(xs)`: construct an interval heap, O(n)
+* `push!(heap, val)`: push `val` into `heap`, O(log n)
+* `pop!(heap)`: pop an element from `heap`, O(1)
+* `popmin!(heap)`: pop the minimum element from `heap`, O(log n)
+* `popmax!(heap)`: pop the maximum element from `heap`, O(log n)
+* `minimum(heap)`: return the minimum element from `heap`, O(1)
+* `maximum(heap)`: return the maximum element from `heap`, O(1)
+
+
 Example
 -------
 
@@ -40,18 +51,6 @@ x = 3
 x = 8
 
 ```
-
-
-Time Complexities
------------------
-
-* `IntervalHeap(xs)`: O(n)
-* `minimum(heap)`: O(1)
-* `maximum(heap)`: O(1)
-* `push!(heap)`: O(log n)
-* `pop!(heap)`: O(1)
-* `popmin!(heap)`: O(log n)
-* `popmax!(heap)`: O(log n)
 
 
 Benchmarks

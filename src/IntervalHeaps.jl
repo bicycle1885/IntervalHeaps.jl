@@ -16,7 +16,7 @@ function Base.call{T}(::Type{IntervalHeap{T}})
 end
 
 function Base.call(::Type{IntervalHeap})
-    return IntervalHeap{Any}([], [], 0)
+    return IntervalHeap{Any}()
 end
 
 function Base.convert{T}(::Type{IntervalHeap}, xs::AbstractVector{T})
