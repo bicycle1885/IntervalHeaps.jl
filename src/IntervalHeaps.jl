@@ -29,7 +29,7 @@ function Base.convert{T}(::Type{IntervalHeap}, xs::AbstractVector{T})
     n = cld(length(xs), 2)
     resize!(minheap, n)
     resize!(maxheap, n)
-    for i in 1:n-1
+    @inbounds for i in 1:n-1
         minheap[i] = xs[2i-1]
         maxheap[i] = xs[2i]
     end
@@ -43,7 +43,7 @@ function Base.convert{T}(::Type{IntervalHeap}, xs::AbstractVector{T})
     end
     heap.len = length(xs)
     for i in n:-1:1
-        fix_down!(heap, i)
+        trickledown!(heap, i)
     end
     return heap
 end
@@ -61,9 +61,11 @@ function Base.push!{T}(heap::IntervalHeap{T}, val::T)
         maxheap[end] = val
     end
     heap.len += 1
-    fix_up!(heap, endof(minheap))
+    fixup!(heap, endof(minheap))
     return heap
 end
+
+Base.push!{T}(heap::IntervalHeap{T}, val) = push!(heap, convert(T, val))
 
 function Base.pop!(heap::IntervalHeap)
     check_nonempty(heap)
@@ -94,7 +96,7 @@ function popmin!(heap::IntervalHeap)
         pop!(maxheap)
     end
     heap.len -= 1
-    fix_down!(heap, 1)
+    trickledown!(heap, 1)
     return min
 end
 
@@ -112,19 +114,11 @@ function popmax!(heap::IntervalHeap)
         pop!(maxheap)
     end
     heap.len -= 1
-    fix_down!(heap, 1)
+    trickledown!(heap, 1)
     return max
 end
 
-function fix_interval!(heap, i)
-    minheap = heap.minheap
-    maxheap = heap.maxheap
-    if minheap[i] > maxheap[i]
-        minheap[i], maxheap[i] = maxheap[i], minheap[i]
-    end
-end
-
-function fix_up!(heap, i)
+function fixup!(heap, i)
     minheap = heap.minheap
     maxheap = heap.maxheap
     fix_interval!(heap, i)
@@ -132,16 +126,16 @@ function fix_up!(heap, i)
         p = parent(i)
         if minheap[p] > minheap[i]
             swapmin!(heap, p, i)
-            fix_up!(heap, p)
+            fixup!(heap, p)
         end
         if maxheap[p] < maxheap[i]
             swapmax!(heap, p, i)
-            fix_up!(heap, p)
+            fixup!(heap, p)
         end
     end
 end
 
-function fix_down!(heap, i)
+function trickledown!(heap, i)
     if isempty(heap)
         return
     end
@@ -160,7 +154,7 @@ function fix_down!(heap, i)
     end
     if min != i
         swapmin!(heap, i, min)
-        fix_down!(heap, min)
+        trickledown!(heap, min)
     end
     # fix maxheap
     max = i
@@ -172,9 +166,17 @@ function fix_down!(heap, i)
     end
     if max != i
         swapmax!(heap, i, max)
-        fix_down!(heap, max)
+        trickledown!(heap, max)
     end
     return
+end
+
+@inline function fix_interval!(heap, i)
+    minheap = heap.minheap
+    maxheap = heap.maxheap
+    @inbounds if minheap[i] > maxheap[i]
+        minheap[i], maxheap[i] = maxheap[i], minheap[i]
+    end
 end
 
 @inline function swapmin!(heap, p, i)
@@ -209,6 +211,7 @@ function Base.sizehint!(heap::IntervalHeap, n::Integer)
     return heap
 end
 
+# iterator
 Base.start(heap::IntervalHeap) = 1
 Base.done(heap::IntervalHeap, i) = i > length(heap)
 function Base.next(heap::IntervalHeap, i)

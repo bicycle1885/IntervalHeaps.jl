@@ -115,6 +115,21 @@ let
 end
 
 let
+    # push values of a convertible type
+    heap = IntervalHeap([1,2,3])
+    @test length(heap) == 3
+    push!(heap, 1.0)
+    @test length(heap) == 4
+    @test sort(collect(heap)) == [1, 1, 2, 3]
+
+    heap = IntervalHeap([1.0, 2.0, 3.0])
+    @test length(heap) == 3
+    push!(heap, 1)
+    @test length(heap) == 4
+    @test sort(collect(heap)) == [1.0, 1.0, 2.0, 3.0]
+end
+
+let
     heap = IntervalHeap([1,2,3])
     @test !isempty(heap)
     @test empty!(heap) === heap
