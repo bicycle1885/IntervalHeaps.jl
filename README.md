@@ -6,7 +6,7 @@
 
 The following operations are supported (n is the number of elements):
 
-* `IntervalHeap(xs)`: construct an interval heap, O(n)
+* `IntervalHeap(xs)`: construct an interval heap from the vector `xs`, O(n)
 * `push!(heap, val)`: push `val` into `heap`, O(log n)
 * `pop!(heap)`: pop an element from `heap`, O(1)
 * `popmin!(heap)`: pop the minimum element from `heap`, O(log n)
