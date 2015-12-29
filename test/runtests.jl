@@ -180,7 +180,7 @@ srand(12345)
         @test n == 2
     end
 
-    @testloop "property-based test" for n in 1:8
+    @testset "property-based test" for n in 1:8
         for _ in 1:5, xs in chain(permutations(randn(n)), permutations(rand(0:1, n)))
             @testset "constructor" begin
                 # Prop: the heap constructor creates a valid double-ended heap
